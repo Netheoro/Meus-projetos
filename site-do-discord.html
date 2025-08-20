@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Discord — Layout Responsivo (Exemplo)</title>
+  <meta name="description" content="Exemplo educacional de layout responsivo inspirado no site do Discord usando HTML + CSS puros."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #404EED;          /* Roxo Discord */
+      --ink: #060607;         /* Preto quase */
+      --ink-2: #232428;       /* Cinza escuro */
+      --muted: #747F8D;       /* Cinza médio */
+      --paper: #FFFFFF;       /* Branco */
+      --paper-2: #F6F6F6;     /* Fundo suave */
+      --accent: #5865F2;      /* Botões */
+      --accent-2: #4752C4;    
+      --success: #57F287;
+      --radius: 1.25rem;
+      --shadow: 0 10px 30px rgba(0,0,0,.12);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink);
+      background: var(--paper-2);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(1120px, 92vw);
+      margin-inline: auto;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(140%) blur(6px);
+      background: color-mix(in oklab, var(--paper) 75%, transparent);
+      border-bottom: 1px solid #e9e9ef;
+    }
+    .nav {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1rem;
+      padding: .75rem 0;
+    }
+    .brand {
+      display: flex; align-items: center; gap: .5rem;
+      font-weight: 800; letter-spacing: .3px;
+    }
+    .brand .logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: radial-gradient(circle at 30% 30%, #99a5ff 0 30%, #5865F2 32% 100%);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,.15);
+    }
+
+    /* Mobile menu */
+    #menu-toggle { display: none; }
+    .menu-btn { display: none; }
+
+    .menu {
+      display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap;
+      list-style: none; padding: 0; margin: 0;
+      font-weight: 600; color: var(--ink-2);
+    }
+    .menu a { text-decoration: none; color: inherit; padding: .5rem .75rem; border-radius: .6rem; }
+    .menu a:hover { background: #f0f1ff; }
+
+    .cta {
+      display: flex; justify-content: flex-end; gap: .75rem; align-items: center;
+    }
+    .btn {
+      appearance: none; border: 0; cursor: pointer; font-weight: 700;
+      padding: .75rem 1rem; border-radius: 999px;
+    }
+    .btn.primary { background: var(--ink); color: var(--paper); }
+    .btn.primary:hover { filter: brightness(.92); }
+    .btn.outline { background: transparent; border: 2px solid var(--ink); color: var(--ink); }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(180deg, #e9ebff 0%, #fff 60%);
+      padding: clamp(2rem, 6vw, 6rem) 0;
+    }
+    .hero-grid { display: grid; gap: 2rem; align-items: center; grid-template-columns: 1.1fr 1fr; }
+    .hero h1 { font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1.1; margin: 0 0 .75rem; letter-spacing: -.02em; }
+    .hero p { font-size: clamp(1rem, 2vw, 1.125rem); color: var(--ink-2); margin: 0 0 1.25rem; }
+
+    .hero-cta { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .btn.accent { background: var(--accent); color: white; }
+    .btn.accent:hover { background: var(--accent-2); }
+
+    .mockup {
+      width: 100%; aspect-ratio: 16 / 10; border-radius: var(--radius);
+      background:
+        radial-gradient(60% 80% at 80% 20%, rgba(88,101,242,.25), transparent 70%),
+        linear-gradient(180deg, #f9f9ff, #f0f1ff);
+      border: 1px solid #e3e5ff;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .bubble {
+      position: absolute; background: white; border: 1px solid #eee; border-radius: 16px; padding: .75rem 1rem; box-shadow: 0 6px 20px rgba(0,0,0,.08);
+      max-width: 220px; font-size: .95rem; color: var(--ink-2);
+    }
+    .bubble.b1 { left: 6%; top: 8%; }
+    .bubble.b2 { right: 6%; top: 28%; }
+    .bubble.b3 { left: 20%; bottom: 10%; }
+
+    /* Seções de features */
+    .section { padding: clamp(2rem, 5vw, 5rem) 0; }
+    .features { display: grid; gap: 2rem; grid-template-columns: repeat(3, 1fr); }
+    .card {
+      background: white; border: 1px solid #eee; border-radius: var(--radius);
+      padding: 1.25rem; box-shadow: var(--shadow);
+      display: grid; gap: .5rem;
+    }
+    .tag { font-size: .75rem; font-weight: 800; color: var(--accent-2); letter-spacing: .08em; text-transform: uppercase; }
+    .card h3 { margin: 0; }
+
+    /* Grade com imagem + texto (estilo Discord) */
+    .split { display: grid; gap: 2rem; align-items: center; grid-template-columns: 1fr 1fr; }
+    .panel {
+      background: white; border: 1px solid #eee; border-radius: var(--radius);
+      padding: min(2rem, 5vw);
+      box-shadow: var(--shadow);
+    }
+
+    /* CTA Final */
+    .cta-final {
+      background: linear-gradient(180deg, #fff, #eef0ff);
+      text-align: center; padding: clamp(2rem, 5vw, 5rem) 0;
+    }
+    .cta-final h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); margin: 0 0 .5rem; }
+    .cta-final p { color: var(--ink-2); margin: 0 0 1rem; }
+
+    /* Footer */
+    footer { background: var(--ink); color: #cfd3da; padding: 2rem 0; }
+    .foot-grid { display: grid; gap: 2rem; grid-template-columns: 1.2fr repeat(4, 1fr); }
+    footer a { color: #e6e9f3; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* Responsividade */
+    @media (max-width: 1024px) {
+      .features { grid-template-columns: 1fr 1fr; }
+      .split { grid-template-columns: 1fr; }
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .nav { grid-template-columns: 1fr auto 1fr; }
+      .menu { display: none; }
+      .menu-btn { display: inline-flex; align-items: center; gap: .5rem; font-weight: 700; border: 2px solid var(--ink); border-radius: 999px; padding: .5rem .75rem; background: white; }
+      #menu-toggle:checked ~ .nav .menu { display: flex; grid-column: 1 / -1; justify-content: flex-start; padding-top: .75rem; }
+      .features { grid-template-columns: 1fr; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .cta { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <input id="menu-toggle" type="checkbox" aria-label="Abrir menu" />
+    <div class="container nav">
+      <a class="brand" href="#">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Discord</span>
+      </a>
+
+      <label for="menu-toggle" class="menu-btn" aria-controls="menu" aria-expanded="false">☰ Menu</label>
+
+      <ul id="menu" class="menu" role="menubar">
+        <li role="none"><a role="menuitem" href="#features">Download</a></li>
+        <li role="none"><a role="menuitem" href="#seguranca">Segurança</a></li>
+        <li role="none"><a role="menuitem" href="#comunidades">Comunidades</a></li>
+        <li role="none"><a role="menuitem" href="#suporte">Suporte</a></li>
+      </ul>
+
+      <div class="cta">
+        <button class="btn outline">Abrir no navegador</button>
+        <button class="btn primary">Entrar</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <h1>Imagine um lugar…</h1>
+        <p>…onde é fácil pertencer a uma escola, um clube, ou uma comunidade mundial. Este layout demonstra como construir uma página inicial responsiva inspirada no Discord, usando HTML + CSS puros.</p>
+        <div class="hero-cta">
+          <a class="btn accent" href="#download">Baixar para Windows</a>
+          <a class="btn outline" href="#navegador">Abra o Discord no navegador</a>
+        </div>
+      </div>
+      <div class="mockup" aria-label="Mockup de interface">
+        <div class="bubble b1">Canais organizados por assunto</div>
+        <div class="bubble b2">Áudio, vídeo e tela compartilhada</div>
+        <div class="bubble b3">Comunidades com moderação e regras</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section">
+    <div class="container">
+      <p class="tag">Para todos</p>
+      <h2 style="margin:0 0 1rem; font-size:clamp(1.5rem,3vw,2rem)">Um lugar para conversar, aprender e jogar</h2>
+      <div class="features">
+        <article class="card">
+          <h3>Texto e Voz</h3>
+          <p>Conversas fluem em canais de texto e voz, com permissões granulares e papéis personalizáveis.</p>
+        </article>
+        <article class="card">
+          <h3>Vídeo e Transmissão</h3>
+          <p>Participe de chamadas de vídeo, compartilhe sua tela e transmita jogos com baixa latência.</p>
+        </article>
+        <article class="card">
+          <h3>Integrações</h3>
+          <p>Conecte bots, webhooks e apps para moderar, entreter e automatizar tarefas do servidor.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blocos em split -->
+  <section id="seguranca" class="section">
+    <div class="container split">
+      <div class="panel">
+        <p class="tag">Confiável</p>
+        <h3>Segurança e Privacidade</h3>
+        <p>Ferramentas de moderação, relatórios e controles para manter sua comunidade segura. Use permissões por canal e autenticação em dois fatores.</p>
+      </div>
+      <div class="panel">
+        <h3>Performance Global</h3>
+        <p>Infraestrutura distribuída garante chamadas estáveis e entrega rápida de mensagens, mesmo em grupos grandes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="comunidades" class="section">
+    <div class="container split">
+      <div class="panel">
+        <p class="tag">Comunidades</p>
+        <h3>Monte o seu servidor</h3>
+        <p>Organize canais, crie categorias e convites com regras. Use cargo de moderação para garantir um ambiente saudável.</p>
+      </div>
+      <div class="panel">
+        <h3>Descubra e participe</h3>
+        <p>Entre em servidores públicos para aprender, jogar e colaborar com pessoas que compartilham seus interesses.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section id="download" class="cta-final">
+    <div class="container">
+      <h2>Pronto para começar?</h2>
+      <p>Baixe o app para desktop e mobile, ou abra no navegador.</p>
+      <div class="hero-cta" style="justify-content:center">
+        <a class="btn accent" href="#">Baixar para Windows</a>
+        <a class="btn outline" href="#">Baixar para Mac</a>
+        <a class="btn outline" href="#">Baixar para Linux</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container foot-grid">
+      <div>
+        <div class="brand" style="color:white">
+          <span class="logo" aria-hidden="true"></span>
+          <span>Discord</span>
+        </div>
+        <p style="margin:.5rem 0 0; color:#a9b0bd">Exemplo educacional — não oficial.</p>
+      </div>
+      <div>
+        <strong>Produto</strong>
+        <ul style="list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:.35rem">
+          <li><a href="#">Baixar</a></li>
+          <li><a href="#">Status</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <strong>Empresa</strong>
+        <ul style="list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:.35rem">
+          <li><a href="#">Sobre</a></li>
+          <li><a href="#">Carreiras</a></li>
+          <li><a href="#">Marcas</a></li>
+        </ul>
+      </div>
+      <div>
+        <strong>Recursos</strong>
+        <ul style="list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:.35rem">
+          <li><a href="#">Suporte</a></li>
+          <li><a href="#">Diretrizes</a></li>
+          <li><a href="#">Segurança</a></li>
+        </ul>
+      </div>
+      <div>
+        <strong>Políticas</strong>
+        <ul style="list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:.35rem">
+          <li><a href="#">Privacidade</a></li>
+          <li><a href="#">Termos</a></li>
+          <li><a href="#">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
